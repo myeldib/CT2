@@ -32,9 +32,11 @@ class RandomDataset(Dataset):
         change_mask=False,
         multi_scaled=False,
         mask_num=4,
+        mask_random=False,
+        n_cls=313,     
     ):
         super().__init__()
-        self.dataset_dir = dataset_di
+        self.dataset_dir = dataset_dir
         self.crop_size = crop_size
         self.image_size = image_size
         self.split = split
@@ -69,7 +71,8 @@ class RandomDataset(Dataset):
         return self
 
     def load_filenames(self, data_dir, split, filepath='fullfilenames.pickle'):
-        filenames = os.listdir(data_dir)
+        base_path = data_dir + '/val'
+        filenames = os.listdir(base_path)
         return filenames
 
     def rgb_to_lab(self, img):
@@ -81,7 +84,11 @@ class RandomDataset(Dataset):
         return tensor.type(torch.float32)
 
     def get_img(self, key):
-        img_pth = os.path.join(self.dataset_dir, key)
+        base_path = self.dataset_dir + '/val'
+        print("************************")
+        print(key)
+        import mm
+        img_pth = os.path.join(base_path, key)
         img = Image.open(img_pth).convert("RGB")
         w, h = img.size
         if w != 256 or h != 256:
