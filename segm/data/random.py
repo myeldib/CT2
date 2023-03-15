@@ -85,9 +85,7 @@ class RandomDataset(Dataset):
 
     def get_img(self, key):
         base_path = self.dataset_dir + '/val'
-        print("************************")
-        print(key)
-        import mm
+
         img_pth = os.path.join(base_path, key)
         img = Image.open(img_pth).convert("RGB")
         w, h = img.size
