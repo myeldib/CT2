@@ -174,11 +174,11 @@ dataset:
     window_stride: 256
   random:
     dataset_dir: '/content/CT2/random'
-    epochs: 256
+    epochs: 1
     #    batch_size: 16
-    batch_size: 2
+    batch_size: 16
     learning_rate: 0.001
-    im_size: 256
+    im_size: 512
     crop_size: 256
-    window_size: 256    # use in inference...
-    window_stride: 256
+    window_size: 512    # use in inference...
+    window_stride: 512
