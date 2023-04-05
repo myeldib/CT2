@@ -14,17 +14,17 @@ from segm.utils import distributed
 import segm.utils.torch as ptu
 from segm import config
 
-from segm.model.factory import create_segmenter
-from segm.optim.factory import create_optimizer, create_scheduler
-from segm.data.factory import create_dataset
-from segm.model.utils import num_params
+from model.factory import create_segmenter
+from optim.factory import create_optimizer, create_scheduler
+from data.factory import create_dataset
+from model.utils import num_params
 
 from timm.utils import NativeScaler
 from contextlib import suppress
 import os
 
-from segm.utils.distributed import sync_model
-from segm.engine import train_one_epoch, evaluate
+from utils.distributed import sync_model
+from engine import train_one_epoch, evaluate
 import collections
 
 
@@ -50,7 +50,6 @@ import collections
 @click.option("--eval-freq", default=None, type=int)
 @click.option("--amp/--no-amp", default=False, is_flag=True)
 @click.option("--resume/--no-resume", default=True, is_flag=True)
-@click.option('--local_rank', type=int)
 @click.option('--only_test', type=bool, default=True)
 @click.option('--add_mask', type=bool, default=True)        # valid
 @click.option('--partial_finetune', type=bool, default=False)       # compare validation, last finetune all blocks.
@@ -100,7 +99,6 @@ def main(
     eval_freq,
     amp,
     resume,
-    local_rank,
     only_test,
     add_mask,
     partial_finetune,
@@ -129,10 +127,11 @@ def main(
     color_token_num,
     sin_color_pos,
 ):
+    os.environ['LOCAL_RANK'] = "0"
     # start distributed mode
-    ptu.set_gpu_mode(True, local_rank)
+    ptu.set_gpu_mode(True)
     # distributed.init_process()
-    torch.distributed.init_process_group(backend="gloo")
+    #torch.distributed.init_process_group(backend="gloo")
 
     # set up configuration
     cfg = config.load_config()
