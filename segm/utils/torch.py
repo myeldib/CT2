@@ -16,7 +16,7 @@ dist_rank = 0
 world_size = 1
 
 
-def set_gpu_mode(mode, local_rank):
+def set_gpu_mode(mode):
     global use_gpu
     global device
     global gpu_id
